@@ -63,6 +63,14 @@ flask run
 Then access web application at the address given, typically
 [`http://127.0.0.1:8080`](http://127.0.0.1:8080)
 
+This is the page you should get at first:
+
+![Start screen](/static/start_screen.png)
+
+And after search for `training wheels`, you get your results in a table:
+
+![Search results](/static/search_results.png)
+
 
 ## Perform a search on a command line interface
 
