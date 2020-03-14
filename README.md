@@ -65,11 +65,11 @@ Then access web application at the address given, typically
 
 This is the page you should get at first:
 
-![Start screen](/static/start_screen.png)
+![Start screen](flask_babac/static/start_screen.png)
 
 And after search for `training wheels`, you get your results in a table:
 
-![Search results](/static/search_results.png)
+![Search results](flask_babac/static/search_results.png)
 
 
 ## Perform a search on a command line interface
