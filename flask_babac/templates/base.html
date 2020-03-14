@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" class="h-100">
+    <head>
+      <!-- Meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="A Python3 Flask front-end application to search the Cycle Babac catalogue and return description, price and availability.">
+      <meta name="author" content="Normand Cyr">
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+      <!-- Additional CSS -->
+      <style>
+        body {
+          padding-top: 5rem;
+        }
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+        .container {
+          padding: 3rem 1.5rem;
+          text-align: center;
+        }
+        .footer {
+          background-color: #f5f5f5;
+          padding: 0 15px;
+          text-align: center;
+        }
+
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+      </style>
+
+      <!-- Title -->
+      {% if title %}
+      <title>{{ title }}</title>
+      {% else %}
+      <title>Flask Babac search engine</title>
+      {% endif %}
+
+    </head>
+    <body class="d-flex flex-column h-100">
+
+      <!-- Navigation bar -->
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/">Flask Babac</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+      <!-- Extra links
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Search</a>
+            </li>
+          </ul>
+        </div>
+      -->
+      </nav>
+
+      <!-- Main content -->
+      <main role="main" class="flex-shrink-0">
+        <div class="container">
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+
+      <footer class="footer mt-auto py-3">
+        <div>
+          <img src="{{ url_for("static", filename="github_logo_32px.png") }}" alt="GitHub logo" width=24px \>
+          <a href="https://www.github.com/normcyr/flask_babac">
+            <span class="text-muted">Flask Babac on GitHub</span>
+          </a>
+        </div>
+      </footer>
+
+      <!-- JavaScript -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

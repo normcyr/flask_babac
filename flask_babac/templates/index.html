@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+<style>
+  p.error_message {
+    color: red;
+    font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+  <h1>Search the Cycle Babac catalog</h1>
+
+  <form action="" method="post">
+    {{ form.csrf }}
+    <div class="form-group">
+      <p>{{ form.search_text.label }}</p>
+      <p>
+        {{ form.search_text(size=40) }}
+        <input type="submit" value="Search" class="btn btn-primary">
+      </p>
+    </div>
+    <div class="input submit">
+    </div>
+  </form>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+     	<p class="error_message">{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="table-responsive">
+    {% if search_text %}
+      {% if list_products|length >= 1 %}
+        <p>{{ list_products|length }} results found for <strong>{{ search_text }}</strong> on Cycle Babac.</p>
+        <p>You can click on the product number in order to access the product page on Cycle Babac website.</p>
+        <table id="resultats" class="table table-striped table-sm">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Babac #</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">In stock?</th>
+            </tr>
+          </thead>
+          <tbody class="table-hover">
+            {% for product in list_products %}
+              <tr scope="row">
+                  <td><a href={{ product['page url']}} target="_blank">{{ product['sku'] }}</a></td>
+                  <td>{{ product['name'] }}</td>
+                  <td>{{ product['price'] }} $</td>
+                  <td>{{ product['stock'] }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="error_message">No product found.</p>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endblock %}
