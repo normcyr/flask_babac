@@ -2,4 +2,4 @@ flask
 recherche_babac2
 python-dotenv
 flask-wtf
-Flask-Babel
+gunicorn
