@@ -7,8 +7,6 @@ from wtforms import Form
 from wtforms import StringField
 from wtforms import validators
 
-# from app import babel
-from config import LANGUAGES
 
 
 class SearchBabacForm(Form):
@@ -60,8 +58,3 @@ def search_babac():
         else:
             flash(form.errors["search_text"][0])
             return render_template("index.html", form=form)
-
-
-# @babel.localeselector
-# def get_locale():
-# return request.accept_languages.best_match(LANGUAGES.keys())
