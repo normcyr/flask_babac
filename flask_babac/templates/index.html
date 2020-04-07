@@ -18,8 +18,12 @@
       <p>{{ form.search_text.label }}</p>
       <p>
         {{ form.search_text(size=40) }}
-        <input type="submit" value="Search" class="btn btn-primary">
+        <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').show();">
       </p>
+        <div id="loading" style="display:none;">
+          <img src="{{ url_for("static", filename="loading.gif") }}" alt="" /><br />
+          Riding through the Cycle Babac catalog
+        </div>
     </div>
     <div class="input submit">
     </div>
