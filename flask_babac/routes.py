@@ -36,7 +36,7 @@ def search_babac():
 
             if username_babac != None and password_babac != None:
                 search = rb2.BabacSearch(username_babac, password_babac)
-                list_products, loggedin = search.do_the_search(search_text)
+                list_products, loggedin, multiple_pages, item_page_url = search.do_the_search(search_text)
 
                 if loggedin:
                     return render_template(
@@ -44,6 +44,8 @@ def search_babac():
                         form=form,
                         list_products=list_products,
                         search_text=search_text,
+                        item_page_url=item_page_url,
+                        multiple_pages=multiple_pages,
                     )
                 else:
                     flash("Incorrect username and/or password.")
