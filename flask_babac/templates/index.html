@@ -1,13 +1,5 @@
 {% extends "base.html" %}
 
-{% block head_extra %}
-<style>
-  p.error_message {
-    color: red;
-    font-weight: bold;
-    }
-</style>
-{% endblock %}
 
 {% block content %}
   <h1>Search the Cycle Babac catalog</h1>
@@ -18,11 +10,11 @@
       <p>{{ form.search_text.label }}</p>
       <p>
         {{ form.search_text(size=40) }}
-        <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').show();">
+        <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').toggle();">
       </p>
         <div id="loading" style="display:none;">
           <img src="{{ url_for("static", filename="loading.gif") }}" alt="" /><br />
-          Riding through the Cycle Babac catalog
+          Riding through the Cycle Babac catalog...
         </div>
     </div>
     <div class="input submit">
@@ -38,14 +30,22 @@
   {% endwith %}
 
   <div class="table-responsive">
+
     {% if search_text %}
+
       {% if multiple_pages %}
         <p>Lots of items were found. Printing the first {{ list_products|length }} items for <strong>{{ search_text }}</strong> on Cycle Babac. More results can be inspected <a href={{ item_page_url }} target="_blank">here</a>.</p>
-        <p></p>
-      {% elif multiple_pages == false and list_products|length >= 1 %}
+
+      {% elif not multiple_pages and list_products|length >= 1 %}
         <p>{{ list_products|length }} results found for <strong>{{ search_text }}</strong> on Cycle Babac.</p>
+
+      {% else %}
+        <p class="error_message">No product found.</p>
+
       {% endif %}
+
       <p>You can click on the product number in order to access the product page on Cycle Babac website.</p>
+
       <table id="resultats" class="table table-striped table-sm">
         <thead class="thead-dark">
           <tr>
@@ -67,8 +67,7 @@
         </tbody>
       </table>
 
-    {% else %}
-      <p class="error_message">No product found.</p>
+
     {% endif %}
   </div>
 {% endblock %}

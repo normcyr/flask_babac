@@ -8,13 +8,12 @@ from wtforms import StringField
 from wtforms import validators
 
 
-
 class SearchBabacForm(Form):
     search_text = StringField(
         "Type the name of a part, or a product number, in order to obtain its price and availability: ",
         validators=[
             validators.DataRequired(message="Please enter something."),
-            validators.Regexp("^[\w0-9 -]+$", message="Invalid characters.",),
+            validators.Regexp(r"^[\w0-9 -]+$", message="Invalid characters.",),
         ],
         render_kw={"placeholder": "e.g. training wheels or 22-168"},
     )
@@ -34,19 +33,29 @@ def search_babac():
         if form.validate():
             username_babac, password_babac = settings.read_config()
 
-            if username_babac != None and password_babac != None:
+            if username_babac is not None and password_babac is not None:
                 search = rb2.BabacSearch(username_babac, password_babac)
-                list_products, loggedin, multiple_pages, item_page_url = search.do_the_search(search_text)
+                (
+                    list_products,
+                    loggedin,
+                    multiple_pages,
+                    item_page_url,
+                ) = search.do_the_search(search_text)
 
                 if loggedin:
-                    return render_template(
-                        "index.html",
-                        form=form,
-                        list_products=list_products,
-                        search_text=search_text,
-                        item_page_url=item_page_url,
-                        multiple_pages=multiple_pages,
-                    )
+
+                    if list_products is not None:
+                        return render_template(
+                            "index.html",
+                            form=form,
+                            list_products=list_products,
+                            search_text=search_text,
+                            item_page_url=item_page_url,
+                            multiple_pages=multiple_pages,
+                        )
+                    else:
+                        flash("No product found.")
+                        return render_template("index.html", form=form)
                 else:
                     flash("Incorrect username and/or password.")
                     return render_template("index.html", form=form)
