@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, url_for
+from flask import abort, jsonify, render_template, request, flash, url_for
 
 from flask_babac import app, settings
 from recherche_babac2 import recherche_babac2 as rb2
@@ -6,6 +6,8 @@ from recherche_babac2 import recherche_babac2 as rb2
 from wtforms import Form
 from wtforms import StringField
 from wtforms import validators
+
+import re
 
 
 class SearchBabacForm(Form):
@@ -69,3 +71,37 @@ def search_babac():
         else:
             flash(form.errors["search_text"][0])
             return render_template("index.html", form=form)
+
+
+@app.route("/json/<sku>")
+def search_one_sku_json(sku):
+    # Only accept skus in the XX-XXX form.
+    m = re.match("^\d\d-\d\d\d$", sku)
+    if m is None:
+        "Invalid SKU format", 404
+
+    username_babac, password_babac = settings.read_config()
+    if username_babac is None or password_babac is None:
+        return (
+            "Please specify the username and password in the configuration file.",
+            500,
+        )
+
+    search = rb2.BabacSearch(username_babac, password_babac)
+    list_products, loggedin, _, _ = search.do_the_search(sku)
+
+    if not loggedin:
+        return "Incorrect username and/or password", 500
+
+    if list_products is None:
+        return "Product not found", 404
+
+    if len(list_products) != 1:
+        return (
+            "Unexpected number of products returned ({})".format(len(list_products)),
+            500,
+        )
+
+    product = list_products[0]
+
+    return jsonify(product)
