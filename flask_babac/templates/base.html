@@ -3,7 +3,7 @@
     <head>
       <!-- Meta tags -->
       <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
       <meta name="description" content="A Python3 Flask front-end application to search the Cycle Babac catalogue and return description, price and availability.">
       <meta name="author" content="Normand Cyr">
 
@@ -44,11 +44,19 @@
         }
       </style>
 
+      <!-- favicon -->
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+      <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+      <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
       <!-- Title -->
       {% if title %}
-      <title>{{ title }}</title>
+        <title>{{ title }}</title>
       {% else %}
-      <title>Flask Babac search engine</title>
+        <title>Flask Babac search engine</title>
       {% endif %}
 
     </head>
@@ -57,9 +65,11 @@
       <!-- Navigation bar -->
       <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="/">Flask Babac</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <!-- Navigation button
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        -->
 
       <!-- Extra links
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
@@ -77,7 +87,14 @@
 
       <!-- Main content -->
       <main role="main" class="flex-shrink-0">
-        <div class="container">
+
+        {% if display_logo %}
+        <div class="container-fluid text-center p-3">
+          {% block logo %}{% endblock %}
+        </div>
+        {% endif %}
+
+        <div class="container-fluid text-center p-3">
           {% block content %}{% endblock %}
         </div>
       </main>

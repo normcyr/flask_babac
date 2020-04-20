@@ -19,3 +19,5 @@ __pycache__
 config.yml
 .env
 .flaskenv
+
+last_changes.md

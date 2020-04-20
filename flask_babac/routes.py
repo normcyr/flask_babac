@@ -27,7 +27,8 @@ def search_babac():
     form = SearchBabacForm(request.form)
 
     if request.method == "GET":
-        return render_template("index.html", form=form)
+        display_logo = True
+        return render_template("index.html", form=form, display_logo=display_logo)
 
     if request.method == "POST":
         search_text = request.form["search_text"]
@@ -47,6 +48,7 @@ def search_babac():
                 if loggedin:
 
                     if list_products is not None:
+                        display_logo = False
                         return render_template(
                             "index.html",
                             form=form,
@@ -54,19 +56,29 @@ def search_babac():
                             search_text=search_text,
                             item_page_url=item_page_url,
                             multiple_pages=multiple_pages,
+                            display_logo=display_logo,
                         )
                     else:
                         flash("No product found.")
-                        return render_template("index.html", form=form)
+                        display_logo = True
+                        return render_template(
+                            "index.html", form=form, display_logo=display_logo
+                        )
                 else:
                     flash("Incorrect username and/or password.")
-                    return render_template("index.html", form=form)
+                    display_logo = True
+                    return render_template(
+                        "index.html", form=form, display_logo=display_logo
+                    )
 
             else:
+                display_logo = True
                 flash(
                     "Please specify the username and password in the configuration file."
                 )
-                return render_template("index.html", form=form)
+                return render_template(
+                    "index.html", form=form, display_logo=display_logo
+                )
 
         else:
             flash(form.errors["search_text"][0])
@@ -76,7 +88,7 @@ def search_babac():
 @app.route("/json/<sku>")
 def search_one_sku_json(sku):
     # Only accept skus in the XX-XXX form.
-    m = re.match("^\d\d-\d\d\d$", sku)
+    m = re.match(r"^\d\d-\d\d\d$", sku)
     if m is None:
         "Invalid SKU format", 404
 
