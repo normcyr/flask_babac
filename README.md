@@ -91,3 +91,27 @@ or, using a catalogue number:
 ```bash
 flask_babac 22-150
 ```
+
+
+## Taking advantage of the JSON endpoint
+
+It is possible to use the JSON endpoint to search for a single SKU.
+
+For example:
+
+```bash
+curl http://127.0.0.1:8080/json/22-168
+```
+
+which will return
+
+```JSON
+{
+  "name": "Training Wheels",
+  "page url": "https://cyclebabac.com/product/stabilizer-12-20/",
+  "price": "10.00",
+  "rebate": "False",
+  "sku": "22-168",
+  "stock": "Yes"
+}
+```
