@@ -4,6 +4,8 @@
 
 A Python3 Flask front-end application to search the Cycle Babac catalogue and return description, price and availability.
 
+![Flask Babac logo](flask_babac/static/logo240px.png)
+
 
 ## Installation
 
