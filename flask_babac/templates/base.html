@@ -7,13 +7,16 @@
       <meta name="description" content="A Python3 Flask front-end application to search the Cycle Babac catalogue and return description, price and availability.">
       <meta name="author" content="Normand Cyr">
 
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+      <!-- Bootstrap and DataTables CSS -->
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
       <!-- Additional CSS -->
       <style>
         body {
           padding-top: 5rem;
+        }
+        th {
+          cursor: pointer;
         }
         .bd-placeholder-img {
           font-size: 1.125rem;
@@ -33,9 +36,18 @@
           text-align: center;
         }
         .error_message {
-            color: red;
-            font-weight: bold;
+          color: red;
+          font-weight: bold;
         }
+        table.dataTable tbody tr.even:hover {
+          background-color: #DAF7A6 ;
+          cursor: pointer;
+        }
+        table.dataTable tbody tr.odd:hover {
+          background-color: #DAF7A6 ;
+          cursor: pointer;
+        }
+
 
         @media (min-width: 768px) {
           .bd-placeholder-img-lg {
@@ -58,6 +70,22 @@
       {% else %}
         <title>Flask Babac search engine</title>
       {% endif %}
+      <!-- JavaScript -->
+      <script type="text/javascript" src="{{ url_for("static", filename="jquery-3.5.0.min.js") }}"></script>
+      <script type="text/javascript" src="{{ url_for("static", filename="bootstrap.min.js") }}"></script>
+      <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+      <script type="text/javascript" class="init">
+        $(document).ready(function() {
+          $('#resultats').DataTable( {
+            "searching":  false,
+            "paging":     false,
+            "ordering":   true,
+            "info":       false,
+            "autoWidth":  true,
+            "order":      [[3, 'desc']]
+          } );
+        } );
+      </script>
 
     </head>
     <body class="d-flex flex-column h-100">
@@ -108,8 +136,5 @@
         </div>
       </footer>
 
-      <!-- JavaScript -->
-      <script src="{{ url_for("static", filename="jquery-3.5.0.min.js") }}" integrity="sha384-LVoNJ6yst/aLxKvxwp6s2GAabqPczfWh6xzm38S/YtjUyZ+3aTKOnD/OJVGYLZDl" crossorigin="anonymous"></script>
-      <script src="{{ url_for("static", filename="bootstrap.min.js") }}" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     </body>
 </html>

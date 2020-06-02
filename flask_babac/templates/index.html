@@ -50,8 +50,7 @@
       {% endif %}
 
       <p>You can click on the product number in order to access the product page on Cycle Babac website.</p>
-
-      <table id="resultats" class="table table-striped table-sm">
+      <table id="resultats" class="stripe hover table table-sm"> 
         <thead class="thead-dark">
           <tr>
             <th scope="col">Babac #</th>
@@ -63,15 +62,18 @@
         <tbody class="table-hover">
           {% for product in list_products %}
             <tr scope="row">
-                <td><a href={{ product['page url']}} target="_blank">{{ product['sku'] }}</a></td>
-                <td>{{ product['name'] }}</td>
-                <td>{{ product['price'] }} $</td>
-                <td>{{ product['stock'] }}</td>
+              <td><a href={{ product['page url']}} target="_blank">{{ product['sku'] }}</a></td>
+              <td>{{ product['name'] }}</td>
+              <td>{{ product['price'] }} $</td>
+              <td>{{ product['stock'] }}</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
-
+			<script>
+				var element = document.getElementById("row");
+				element.classList.add("text-muted");
+			</script>
     {% endif %}
   </div>
 
