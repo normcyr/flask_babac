@@ -15,7 +15,7 @@ class SearchBabacForm(Form):
         "Type the name of a part, or a product number, in order to obtain its price and availability: ",
         validators=[
             validators.DataRequired(message="Please enter something."),
-            validators.Regexp(r"^[\w0-9 -]+$", message="Invalid characters.",),
+            validators.Regexp(r"^[\w0-9 -.]+$", message="Invalid characters.",),
         ],
         render_kw={"placeholder": "e.g. training wheels or 22-168"},
     )
