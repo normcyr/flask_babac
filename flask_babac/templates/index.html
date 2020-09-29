@@ -16,7 +16,8 @@
       <p>{{ form.search_text.label }}</p>
       <p>
         {{ form.search_text(size=28) }}
-        <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').toggle();">
+        <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').toggle();"><br />
+        <input type="checkbox" name="show_cost_price" value="False"> Show cost price?
       </p>
         <div id="loading" style="display:none;">
           <img src="{{ url_for('static', filename='loading.gif') }}" alt="loading..." /><br />
@@ -55,7 +56,12 @@
           <tr>
             <th scope="col">Babac #</th>
             <th scope="col">Name</th>
-            <th scope="col">Price</th>
+            {% if show_cost_price %}
+              <th scope="col">Cost price</th>
+            {% else %}
+              <th scope="col">Retail price</th>
+            {% endif %}
+
             <th scope="col">In stock?</th>
           </tr>
         </thead>
@@ -64,7 +70,11 @@
             <tr scope="row">
               <td><a href={{ product['page url']}} target="_blank">{{ product['sku'] }}</a></td>
               <td>{{ product['name'] }}</td>
-              <td>{{ product['price'] }} $</td>
+              {% if show_cost_price %}
+                <td>{{ "%.2f"|format(product['price']|float) }} $</td>
+              {% else %}
+                <td>{{ "%.2f"|format(product['price']|float * 2) }} $</td>
+              {% endif %}
               <td>{{ product['stock'] }}</td>
             </tr>
           {% endfor %}
