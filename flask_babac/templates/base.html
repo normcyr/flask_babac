@@ -70,6 +70,7 @@
       {% else %}
         <title>Flask Babac search engine</title>
       {% endif %}
+
       <!-- JavaScript -->
       <script type="text/javascript" src="{{ url_for("static", filename="jquery-3.5.0.min.js") }}"></script>
       <script type="text/javascript" src="{{ url_for("static", filename="bootstrap.min.js") }}"></script>
@@ -86,31 +87,13 @@
           } );
         } );
       </script>
-
     </head>
+
     <body class="d-flex flex-column h-100">
 
       <!-- Navigation bar -->
       <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="/">Flask Babac</a>
-        <!-- Navigation button
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        -->
-
-      <!-- Extra links
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Search</a>
-            </li>
-          </ul>
-        </div>
-      -->
       </nav>
 
       <!-- Main content -->

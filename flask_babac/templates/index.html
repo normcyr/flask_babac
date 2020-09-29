@@ -16,8 +16,23 @@
       <p>{{ form.search_text.label }}</p>
       <p>
         {{ form.search_text(size=28) }}
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="show_cost_price" name="show_cost_price"">
+          <script>
+            $('#show_cost_price').click(function(e){
+            	if (e.target.checked) {
+              	sessionStorage.checked = true;
+              } else {
+              	sessionStorage.checked = false;
+              }
+            })
+            $( document ).ready(function() {
+            	document.querySelector('#show_cost_price').checked = sessionStorage.checked
+            });
+          </script>
+          <label class="custom-control-label" for="show_cost_price">Show cost price?</label><br /><br />
+        </div>
         <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').toggle();"><br />
-        <input type="checkbox" name="show_cost_price" value="False"> Show cost price?
       </p>
         <div id="loading" style="display:none;">
           <img src="{{ url_for('static', filename='loading.gif') }}" alt="loading..." /><br />
