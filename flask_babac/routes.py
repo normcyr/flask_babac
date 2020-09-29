@@ -32,6 +32,7 @@ def search_babac():
 
     if request.method == "POST":
         search_text = request.form["search_text"]
+        show_cost_price = request.form.get("show_cost_price", type=bool)
 
         if form.validate():
             username_babac, password_babac = settings.read_config()
@@ -57,6 +58,7 @@ def search_babac():
                             item_page_url=item_page_url,
                             multiple_pages=multiple_pages,
                             display_logo=display_logo,
+                            show_cost_price=show_cost_price,
                         )
                     else:
                         flash("No product found.")
