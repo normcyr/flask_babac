@@ -11,7 +11,7 @@ import re
 
 
 class SearchBabacForm(Form):
-    search_text = StringField(
+    q = StringField(
         "Type the name of a part, or a product number, in order to obtain its price and availability: ",
         validators=[
             validators.DataRequired(message="Please enter something."),
@@ -21,70 +21,119 @@ class SearchBabacForm(Form):
     )
 
 
-@app.route("/", methods=["GET", "POST"])
-@app.route("/index", methods=["GET", "POST"])
-def search_babac():
+@app.route("/api/v1/search", methods=["GET"])
+def api_v1_search_query():
+
     form = SearchBabacForm(request.form)
 
-    if request.method == "GET":
-        display_logo = True
-        return render_template("index.html", form=form, display_logo=display_logo)
+    if "q" in request.args:
+        search_text = request.args["q"]
+    else:
+        return "Error: No search term field provided. Please specify a search term."
 
-    if request.method == "POST":
-        search_text = request.form["search_text"]
-        show_cost_price = request.form.get("show_cost_price", type=bool)
+    if "cost_price" in request.args:
+        show_cost_price = True
+    else:
+        show_cost_price = False
 
-        if form.validate():
-            username_babac, password_babac = settings.read_config()
+    username_babac, password_babac = settings.read_config()
 
-            if username_babac is not None and password_babac is not None:
-                search = rb2.BabacSearch(username_babac, password_babac)
-                (
-                    list_products,
-                    loggedin,
-                    multiple_pages,
-                    item_page_url,
-                ) = search.do_the_search(search_text)
+    if username_babac is not None and password_babac is not None:
+        search = rb2.BabacSearch(username_babac, password_babac)
+        (
+            list_products,
+            loggedin,
+            multiple_pages,
+            item_page_url,
+        ) = search.do_the_search(search_text)
 
-                if loggedin:
+        if loggedin:
 
-                    if list_products is not None:
-                        display_logo = False
-                        return render_template(
-                            "index.html",
-                            form=form,
-                            list_products=list_products,
-                            search_text=search_text,
-                            item_page_url=item_page_url,
-                            multiple_pages=multiple_pages,
-                            display_logo=display_logo,
-                            show_cost_price=show_cost_price,
-                        )
-                    else:
-                        flash("No product found.")
-                        display_logo = True
-                        return render_template(
-                            "index.html", form=form, display_logo=display_logo
-                        )
-                else:
-                    flash("Incorrect username and/or password.")
-                    display_logo = True
-                    return render_template(
-                        "index.html", form=form, display_logo=display_logo
-                    )
-
+            if list_products is not None:
+                return jsonify(list_products)
             else:
-                display_logo = True
-                flash(
-                    "Please specify the username and password in the configuration file."
+                return "No product found."
+
+        else:
+            return "Incorrect username and/or password."
+
+    else:
+        return "Please specify the username and password in the configuration file."
+
+
+@app.route("/search", methods=["GET"])
+def search_query():
+
+    form = SearchBabacForm(request.form)
+
+    # if :
+    #     search_text = request.form["search_text"]
+    #     show_cost_price = request.form.get("show_cost_price", type=bool)
+
+    if "q" in request.args:
+        search_text = request.args["q"]
+    else:
+        return "Error: No search term field provided. Please specify a search term."
+
+    if "show_cost_price" in request.args:
+        show_cost_price = True
+    else:
+        show_cost_price = False
+
+    username_babac, password_babac = settings.read_config()
+
+    if username_babac is not None and password_babac is not None:
+        search = rb2.BabacSearch(username_babac, password_babac)
+        (
+            list_products,
+            loggedin,
+            multiple_pages,
+            item_page_url,
+        ) = search.do_the_search(search_text)
+
+        if loggedin:
+
+            if list_products is not None:
+                display_logo = False
+                return render_template(
+                    "index.html",
+                    form=form,
+                    list_products=list_products,
+                    q=search_text,
+                    item_page_url=item_page_url,
+                    multiple_pages=multiple_pages,
+                    display_logo=display_logo,
+                    show_cost_price=show_cost_price,
                 )
+            else:
+                flash("No product found.")
+                display_logo = True
                 return render_template(
                     "index.html", form=form, display_logo=display_logo
                 )
-
         else:
-            flash(form.errors["search_text"][0])
-            return render_template("index.html", form=form)
+            flash("Incorrect username and/or password.")
+            display_logo = True
+            return render_template(
+                "index.html", form=form, display_logo=display_logo
+            )
+    else:
+        display_logo = True
+        flash(
+            "Please specify the username and password in the configuration file."
+        )
+        return render_template(
+            "index.html", form=form, display_logo=display_logo
+        )
+
+
+@app.route("/", methods=["GET"])
+@app.route("/index", methods=["GET"])
+def search_babac():
+    form = SearchBabacForm(request.form)
+
+    display_logo = True
+    return render_template("index.html", form=form, display_logo=display_logo)
 
 
 @app.route("/json/<sku>")
