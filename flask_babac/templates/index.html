@@ -10,12 +10,12 @@
 
   <h1>Search the Cycle Babac catalog</h1>
 
-  <form action="" method="post">
+  <form action="search" method="GET">
     {{ form.csrf }}
     <div class="form-group input-sm">
-      <p>{{ form.search_text.label }}</p>
+      <p>{{ form.q.label }}</p>
       <p>
-        {{ form.search_text(size=28) }}
+        {{ form.q(size=28) }}
         <div class="custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" id="show_cost_price" name="show_cost_price"">
           <script>
@@ -52,13 +52,13 @@
   {% endwith %}
 
   <div class="table-responsive">
-    {% if search_text %}
+    {% if q %}
 
       {% if multiple_pages %}
-        <p>Lots of items were found. Printing the first {{ list_products|length }} items for <strong>{{ search_text }}</strong> on Cycle Babac. More results can be inspected <a href={{ item_page_url }} target="_blank">here</a>.</p>
+        <p>Lots of items were found. Printing the first {{ list_products|length }} items for <strong>{{ q }}</strong> on Cycle Babac. More results can be inspected <a href={{ item_page_url }} target="_blank">here</a>.</p>
 
       {% elif not multiple_pages and list_products|length >= 1 %}
-        <p>{{ list_products|length }} results found for <strong>{{ search_text }}</strong> on Cycle Babac.</p>
+        <p>{{ list_products|length }} results found for <strong>{{ q }}</strong> on Cycle Babac.</p>
 
       {% else %}
         <p class="error_message">No product found.</p>
