@@ -32,9 +32,9 @@
           </script>
           <label class="custom-control-label" for="show_cost_price">Show cost price?</label><br /><br />
         </div>
-        <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').toggle();"><br />
+        <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').toggle(); $('#results-section').hide();"><br />
       </p>
-        <div id="loading" style="display:none;">
+        <div id="loading" style="display:none;" class="container">
           <img src="{{ url_for('static', filename='loading.gif') }}" alt="loading..." /><br />
           Riding through the Cycle Babac catalog...
         </div>
@@ -51,58 +51,62 @@
     {% endif %}
   {% endwith %}
 
-  <div class="table-responsive">
-    {% if q %}
+  <div class="container">
+    <div class="table-responsive" id="results-section">
+      {% if q %}
 
-      {% if list_products|length >=1 %}
-        {% if multiple_pages %}
-          <p>Lots of items were found. Printing the first {{ list_products|length }} items for <strong>{{ q }}</strong> on Cycle Babac. More results can be inspected <a href={{ item_page_url }} target="_blank">here</a>.</p>
+        {% if list_products|length >=1 %}
+          {% if multiple_pages %}
+            <p>Lots of items were found. Printing the first {{ list_products|length }} items for <strong>{{ q }}</strong> on Cycle Babac. More results can be inspected <a href={{ item_page_url }} target="_blank">here</a>.</p>
 
-        {% elif not multiple_pages %}
-          <p>{{ list_products|length }} results found for <strong>{{ q }}</strong> on Cycle Babac.</p>
+          {% elif not multiple_pages %}
+            <p>{{ list_products|length }} results found for <strong>{{ q }}</strong> on Cycle Babac.</p>
+
+          {% endif %}
+
+          <p>You can click on the product number in order to access the product page on Cycle Babac website.</p>
+
+          <table id="results-table" class="stripe table-hover table table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Babac #</th>
+                <th scope="col">Name</th>
+                {% if show_cost_price %}
+                  <th scope="col">Cost price</th>
+                {% else %}
+                  <th scope="col">Retail price</th>
+                {% endif %}
+
+                <th scope="col">In stock?</th>
+              </tr>
+            </thead>
+            <tbody class="table-hover">
+              {% for product in list_products %}
+                <tr scope="row">
+                  <td><a href={{ product['page url']}} target="_blank">{{ product['sku'] }}</a></td>
+                  <td>{{ product['name'] }}</td>
+                  {% if show_cost_price %}
+                    <td>{{ "%.2f"|format(product['price']|float) }} $</td>
+                  {% else %}
+                    <td>{{ "%.2f"|format(product['price']|float * 2) }} $</td>
+                  {% endif %}
+                  <td>{{ product['stock'] }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        {% elif list_products|length == 0 %}
+          <p class="error_message">No product found.</p>
+
+        {% else %}
+          <p class="error_message">Error.</p>
 
         {% endif %}
-
-        <p>You can click on the product number in order to access the product page on Cycle Babac website.</p>
-        <table id="resultats" class="stripe hover table table-sm">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Babac #</th>
-              <th scope="col">Name</th>
-              {% if show_cost_price %}
-                <th scope="col">Cost price</th>
-              {% else %}
-                <th scope="col">Retail price</th>
-              {% endif %}
-
-              <th scope="col">In stock?</th>
-            </tr>
-          </thead>
-          <tbody class="table-hover">
-            {% for product in list_products %}
-              <tr scope="row">
-                <td><a href={{ product['page url']}} target="_blank">{{ product['sku'] }}</a></td>
-                <td>{{ product['name'] }}</td>
-                {% if show_cost_price %}
-                  <td>{{ "%.2f"|format(product['price']|float) }} $</td>
-                {% else %}
-                  <td>{{ "%.2f"|format(product['price']|float * 2) }} $</td>
-                {% endif %}
-                <td>{{ product['stock'] }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-
-      {% elif list_products|length == 0 %}
-        <p class="error_message">No product found.</p>
-
-      {% else %}
-        <p class="error_message">Error.</p>
-
       {% endif %}
-    {% endif %}
+    </div>
   </div>
+
   <script type="text/javascript">
     $(document).ready(function(){
       $("tr:contains(No)").addClass("text-danger");
