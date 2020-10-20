@@ -66,10 +66,6 @@ def search_query():
 
     form = SearchBabacForm(request.form)
 
-    # if :
-    #     search_text = request.form["search_text"]
-    #     show_cost_price = request.form.get("show_cost_price", type=bool)
-
     if "q" in request.args:
         search_text = request.args["q"]
     else:
@@ -109,22 +105,18 @@ def search_query():
                 flash("No product found.")
                 display_logo = True
                 return render_template(
-                    "index.html", form=form, display_logo=display_logo
+                    "index.html", form=form, q=search_text, display_logo=display_logo
                 )
         else:
             flash("Incorrect username and/or password.")
             display_logo = True
             return render_template(
-                "index.html", form=form, display_logo=display_logo
+                "index.html", form=form, q=search_text, display_logo=display_logo
             )
     else:
         display_logo = True
-        flash(
-            "Please specify the username and password in the configuration file."
-        )
-        return render_template(
-            "index.html", form=form, display_logo=display_logo
-        )
+        flash("Please specify the username and password in the configuration file.")
+        return render_template("index.html", form=form, display_logo=display_logo)
 
 
 @app.route("/", methods=["GET"])
