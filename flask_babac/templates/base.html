@@ -39,6 +39,9 @@
           color: red;
           font-weight: bold;
         }
+        .custom-switch {
+          padding-top: 0.5rem;
+        }
         table.dataTable tbody tr.even:hover {
           background-color: #DAF7A6 ;
           cursor: pointer;
@@ -49,9 +52,7 @@
         }
         table {
           align-items: center;
-
         }
-
 
         @media (min-width: 768px) {
           .bd-placeholder-img-lg {
@@ -80,7 +81,7 @@
       <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
       <script type="text/javascript" class="init">
         $(document).ready(function() {
-          $('#resultats').DataTable( {
+          $('#results-table').DataTable( {
             "searching":  false,
             "paging":     false,
             "ordering":   true,

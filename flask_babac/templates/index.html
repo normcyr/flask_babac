@@ -12,32 +12,30 @@
 
   <form action="search" method="GET">
     {{ form.csrf }}
-    <div class="form-group input-sm">
+    <div class="form-group">
       <p>{{ form.q.label }}</p>
-      <p>
-        {{ form.q(size=28,value=q) }}
-        <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="show_cost_price" name="show_cost_price"">
-          <script>
-            $('#show_cost_price').click(function(e){
-            	if (e.target.checked) {
-              	sessionStorage.checked = true;
-              } else {
-              	sessionStorage.checked = false;
-              }
-            })
-            $( document ).ready(function() {
-            	document.querySelector('#show_cost_price').checked = sessionStorage.checked
-            });
-          </script>
-          <label class="custom-control-label" for="show_cost_price">Show cost price?</label><br /><br />
-        </div>
-        <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').toggle(); $('#results-section').hide();"><br />
-      </p>
-        <div id="loading" style="display:none;" class="container">
-          <img src="{{ url_for('static', filename='loading.gif') }}" alt="loading..." /><br />
-          Riding through the Cycle Babac catalog...
-        </div>
+      {{ form.q(size=28,value=q) }}
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="show_cost_price" name="show_cost_price">
+        <script>
+          $('#show_cost_price').click(function(e){
+          	if (e.target.checked) {
+            	sessionStorage.checked = true;
+            } else {
+            	sessionStorage.checked = false;
+            }
+          })
+          $( document ).ready(function() {
+          	document.querySelector('#show_cost_price').checked = sessionStorage.checked
+          });
+        </script>
+        <label class="custom-control-label" for="show_cost_price">Show cost price?</label><br /><br />
+      </div>
+      <input type="submit" value="Search" class="btn btn-primary" onclick="$('#loading').toggle(); $('#results-section').hide();"><br />
+      <div id="loading" style="display:none;" class="container">
+        <img src="{{ url_for('static', filename='loading.gif') }}" alt="loading..." /><br />
+        Riding through the Cycle Babac catalog...
+      </div>
     </div>
     <div class="input submit">
     </div>
