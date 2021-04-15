@@ -31,7 +31,7 @@ def api_v1_search_query():
     else:
         return "Error: No search term field provided. Please specify a search term."
 
-    if "cost_price" in request.args:
+    if "show_cost_price" in request.args:
         show_cost_price = True
     else:
         show_cost_price = False
@@ -50,6 +50,9 @@ def api_v1_search_query():
         if loggedin:
 
             if list_products is not None:
+                if show_cost_price == False:
+                    for product in list_products:
+                        product["price"] = str("{:.2f}".format(float(product["price"]) * 2, 2))
                 return jsonify(list_products)
             else:
                 return "No product found."
