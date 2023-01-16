@@ -1,5 +1,5 @@
 flask
-recherche_babac2
+recherche_babac2==0.2.5
 python-dotenv
 flask-wtf
 gunicorn
