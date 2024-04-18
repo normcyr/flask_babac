@@ -29,10 +29,12 @@ setup(
     author_email="norm@normandcyr.com",
     license="GNU GPLv3",
     packages=["flask_babac"],
-    entry_points={"console_scripts": ["flask_babac=flask_babac.flask_babac:main"],},
+    entry_points={
+        "console_scripts": ["flask_babac=flask_babac.flask_babac:main"],
+    },
     install_requires=[
         "flask",
-        "recherche_babac2",
+        "recherche_babac2==0.2.9",
         "python-dotenv",
         "flask-wtf",
         "PyYAML",

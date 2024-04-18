@@ -15,7 +15,10 @@ class SearchBabacForm(Form):
         "Type the name of a part, or a product number, in order to obtain its price and availability: ",
         validators=[
             validators.DataRequired(message="Please enter something."),
-            validators.Regexp(r"^[\.\w0-9 -]+$", message="Invalid characters.",),
+            validators.Regexp(
+                r"^[\.\w0-9 -]+$",
+                message="Invalid characters.",
+            ),
         ],
         render_kw={"placeholder": "e.g. training wheels or 22-168"},
     )
@@ -52,7 +55,9 @@ def api_v1_search_query():
             if list_products is not None:
                 if show_cost_price == False:
                     for product in list_products:
-                        product["price"] = str("{:.2f}".format(float(product["price"]) * 2, 2))
+                        product["price"] = str(
+                            "{:.2f}".format(float(product["price"]) * 2, 2)
+                        )
                 return jsonify(list_products)
             else:
                 return "No product found."
@@ -83,12 +88,9 @@ def search_query():
 
     if username_babac is not None and password_babac is not None:
         search = rb2.BabacSearch(username_babac, password_babac)
-        (
-            list_products,
-            loggedin,
-            multiple_pages,
-            item_page_url,
-        ) = search.do_the_search(search_text)
+        list_products, loggedin, multiple_pages, item_page_url = search.do_the_search(
+            search_text
+        )
 
         if loggedin:
 
@@ -108,18 +110,28 @@ def search_query():
                 flash("No product found.")
                 display_logo = True
                 return render_template(
-                    "index.html", form=form, q=search_text, display_logo=display_logo,
+                    "index.html",
+                    form=form,
+                    q=search_text,
+                    display_logo=display_logo,
                 )
         else:
             flash("Incorrect username and/or password.")
             display_logo = True
             return render_template(
-                "index.html", form=form, q=search_text, display_logo=display_logo,
+                "index.html",
+                form=form,
+                q=search_text,
+                display_logo=display_logo,
             )
     else:
         display_logo = True
         flash("Please specify the username and password in the configuration file.")
-        return render_template("index.html", form=form, display_logo=display_logo,)
+        return render_template(
+            "index.html",
+            form=form,
+            display_logo=display_logo,
+        )
 
 
 @app.route("/", methods=["GET"])
@@ -128,7 +140,11 @@ def search_babac():
     form = SearchBabacForm(request.form)
 
     display_logo = True
-    return render_template("index.html", form=form, display_logo=display_logo,)
+    return render_template(
+        "index.html",
+        form=form,
+        display_logo=display_logo,
+    )
 
 
 @app.route("/json/<sku>")
